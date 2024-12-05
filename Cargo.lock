@@ -23,6 +23,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "itertools",
+ "rdxsort",
  "regex",
 ]
 
@@ -46,6 +47,12 @@ name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
+
+[[package]]
+name = "rdxsort"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75963a5f70eb99b7a82bcf70946429fc3f82c1ca6718609976622c343750c169"
 
 [[package]]
 name = "regex"
