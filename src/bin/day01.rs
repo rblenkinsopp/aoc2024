@@ -3,7 +3,6 @@ use itertools::Itertools;
 use std::collections::HashMap;
 use std::io::BufRead;
 use aoc2024::get_input_reader;
-use rdxsort::*;
 
 // Pre-allocate 1000 entries as this is the expected input count.
 const EXPECTED_INPUT_COUNT: usize = 1000;
@@ -25,8 +24,8 @@ fn main() -> anyhow::Result<()> {
         right_numbers.push(right);
         *right_numbers_counts.entry(right).or_insert(0) += 1;
     }
-    left_numbers.rdxsort();
-    right_numbers.rdxsort();
+    left_numbers.sort_unstable();
+    right_numbers.sort_unstable();
 
     // Part 1
     // Calculate the accumulation of the difference between the two numbers.
