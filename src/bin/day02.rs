@@ -1,6 +1,6 @@
 // Advent of Code 2024: Day 2
 use std::io::BufRead;
-use aoc2024::get_input;
+use aoc2024::get_input_reader;
 
 fn check_report(report: &Vec<i32>, ignore_index: Option<usize>) -> bool {
     let mut report_direction: i32 = 0;
@@ -44,7 +44,7 @@ fn main() {
     let mut dampened_safe_reports = 0;
 
     // Parse the data into a list of reports.
-    for report in get_input()
+    for report in get_input_reader()
         .lines()
         .map(|line| {
             line.unwrap()

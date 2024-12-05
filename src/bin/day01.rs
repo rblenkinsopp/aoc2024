@@ -2,7 +2,7 @@
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::io::BufRead;
-use aoc2024::get_input;
+use aoc2024::get_input_reader;
 
 // Pre-allocate 1000 entries as this is the expected input count.
 const EXPECTED_INPUT_COUNT: usize = 1000;
@@ -14,7 +14,7 @@ fn main() -> anyhow::Result<()> {
     let mut right_numbers_counts: HashMap<i32, i32> = HashMap::with_capacity(EXPECTED_INPUT_COUNT);
     
     
-    for line in get_input().lines() {
+    for line in get_input_reader().lines() {
         let (left, right) = line?
             .split_whitespace()
             .map(|s| s.parse::<i32>().unwrap())
