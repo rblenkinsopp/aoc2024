@@ -40,7 +40,9 @@ fn day01(input: impl BufRead) -> anyhow::Result<(i32, i32)> {
 }
 
 fn main() -> anyhow::Result<()>{
-    day01(get_input())?;
+    let (part1_result, part2_result) = day01(get_input())?;
+    println!("{}", part1_result);
+    println!("{}", part2_result);
     Ok(())
 }
 
