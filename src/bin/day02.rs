@@ -2,23 +2,38 @@
 use std::io::BufRead;
 use aoc2024::get_input;
 
-fn check_report(report: &Vec<i32>) -> bool {
+fn check_report(report: &Vec<i32>, ignore_index: Option<usize>) -> bool {
     let mut report_direction: i32 = 0;
-    for i in 0..report.len() - 1 {
-        let difference = report[i] - report[i + 1];
+    let report_len = report.len();
+
+    for i in 0..report_len {
+        if Some(i) == ignore_index {
+            continue;
+        }
+
+        let mut j = i + 1;
+        while Some(j) == ignore_index {
+            j += 1;
+        }
+
+        if j >= report_len {
+            break;
+        }
+
+        let difference = report[i] - report[j];
 
         // Check if unsafe due to magnitude of change.
         if !(1..4).contains(&difference.abs()) {
-            return false
+            return false;
         }
 
         // Check if unsafe due to not all increasing or decreasing.
         if report_direction != 0 && difference.signum() != report_direction {
-            return false
+            return false;
         }
 
         // Record the sequence direction.
-        report_direction = difference.signum()
+        report_direction = difference.signum();
     }
     true
 }
@@ -35,21 +50,18 @@ fn main() {
             line.unwrap()
                 .split_whitespace()
                 .map(|s| s.parse::<i32>().unwrap())
-                .collect()
+                .collect::<Vec<i32>>()
         }) {
 
         // Check the report unmodified - it's safe if it passes.
-        if check_report(&report) {
+        if check_report(&report, None) {
             safe_reports += 1;
             continue
         }
 
         // Attempt to solve the issue with the problem dampener if there is one.
         for index_to_remove in 0..report.len() {
-            let mut modified_report = report.clone();
-            modified_report.remove(index_to_remove);
-
-            if check_report(&modified_report) {
+            if check_report(&report, index_to_remove.into()) {
                 dampened_safe_reports += 1;
                 break;
             }
