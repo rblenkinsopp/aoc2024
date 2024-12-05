@@ -57,5 +57,5 @@ fn main() {
     }
 
     println!("{}", safe_reports);
-    println!("{}", dampened_safe_reports);
+    println!("{}", safe_reports + dampened_safe_reports);
 }
