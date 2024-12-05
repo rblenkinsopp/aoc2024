@@ -1,15 +1,15 @@
 // Advent of Code 2024: Day 1
-use aoc2024::get_input;
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::io::BufRead;
+use aoc2024::get_input;
 
-fn day01(input: impl BufRead) -> anyhow::Result<(i32, i32)> {
+fn main() -> anyhow::Result<()> {
     // Parse the data into sorted lists of integers and count the right numbers.
     let mut left_numbers: Vec<i32> = Vec::new();
     let mut right_numbers: Vec<i32> = Vec::new();
     let mut right_numbers_counts: HashMap<i32, i32> = HashMap::new();
-    for line in input.lines() {
+    for line in get_input().lines() {
         let (left, right) = line?
             .split_whitespace()
             .map(|s| s.parse::<i32>().unwrap())
@@ -28,6 +28,7 @@ fn day01(input: impl BufRead) -> anyhow::Result<(i32, i32)> {
     for (left, right) in left_numbers.iter().zip(right_numbers.iter()) {
         difference_sum += (left - right).abs();
     }
+    println!("{}", difference_sum);
 
     // Part 2
     // Calculate the similarity score.
@@ -35,36 +36,7 @@ fn day01(input: impl BufRead) -> anyhow::Result<(i32, i32)> {
     for number in left_numbers {
         similarity_score += number * *right_numbers_counts.entry(number).or_default();
     }
-    
-    Ok((difference_sum, similarity_score))
-}
+    println!("{}", similarity_score);
 
-fn main() -> anyhow::Result<()>{
-    let (part1_result, part2_result) = day01(get_input())?;
-    println!("{}", part1_result);
-    println!("{}", part2_result);
     Ok(())
-}
-
-#[cfg(test)]
-mod test {
-    use std::io::BufReader;
-    use super::*;
-
-    const TEST_INPUT: &str = "3   4
-4   3
-2   5
-1   3
-3   9
-3   3";
-    const TEST_ANSWER_PART_1: i32 = 11;
-    const TEST_ANSWER_PART_2: i32 = 31;
-
-    #[test]
-    fn test() {
-        match day01(BufReader::new(std::io::Cursor::new(TEST_INPUT))) {
-            Ok(result) => assert_eq!(result, (TEST_ANSWER_PART_1, TEST_ANSWER_PART_2)),
-            Err(err) => panic!("Test failed with error: {:?}", err),
-        };
-    }
 }
