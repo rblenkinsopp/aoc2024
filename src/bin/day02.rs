@@ -2,17 +2,18 @@
 use std::io::BufRead;
 use aoc2024::get_input_reader;
 
-fn check_report(report: &Vec<i32>, ignore_index: Option<usize>) -> bool {
+#[inline]
+fn check_report(report: &[i32], ignore_index: isize) -> bool {
     let mut report_direction: i32 = 0;
-    let report_len = report.len();
+    let report_len = report.len() as isize;
 
     for i in 0..report_len {
-        if Some(i) == ignore_index {
+        if i == ignore_index {
             continue;
         }
 
         let mut j = i + 1;
-        while Some(j) == ignore_index {
+        if j == ignore_index {
             j += 1;
         }
 
@@ -20,7 +21,8 @@ fn check_report(report: &Vec<i32>, ignore_index: Option<usize>) -> bool {
             break;
         }
 
-        let difference = report[i] - report[j];
+
+        let difference = unsafe{ report.get_unchecked(i as usize) - report.get_unchecked(j as usize) };
 
         // Check if unsafe due to magnitude of change.
         if !(1..4).contains(&difference.abs()) {
@@ -46,28 +48,27 @@ fn main() {
     // Parse the data into a list of reports.
     for report in get_input_reader()
         .lines()
-        .map(|line| {
-            line.unwrap()
+        .map(|line| unsafe {
+            line.unwrap_unchecked()
                 .split_whitespace()
-                .map(|s| s.parse::<i32>().unwrap())
+                .map(|s| s.parse::<i32>().unwrap_unchecked())
                 .collect::<Vec<i32>>()
         }) {
 
         // Check the report unmodified - it's safe if it passes.
-        if check_report(&report, None) {
+        if check_report(&report, -1) {
             safe_reports += 1;
             continue
         }
 
         // Attempt to solve the issue with the problem dampener if there is one.
         for index_to_remove in 0..report.len() {
-            if check_report(&report, index_to_remove.into()) {
+            if check_report(&report, index_to_remove as isize) {
                 dampened_safe_reports += 1;
                 break;
             }
         }
     }
 
-    println!("{}", safe_reports);
-    println!("{}", safe_reports + dampened_safe_reports);
+    println!("{}\n{}", safe_reports, safe_reports + dampened_safe_reports);
 }
