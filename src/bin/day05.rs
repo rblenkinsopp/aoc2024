@@ -37,11 +37,13 @@ fn main() {
 
     let mut correct_middle_page_sum = 0;
     let mut incorrect_middle_page_sum = 0;
+    
     for mut update in updates {
         if update.is_sorted_by(|a, b| rules.contains(&(*a, *b))) {
             correct_middle_page_sum += update[update.len() / 2]
         } else {
-            update.sort_by(|a, b| {
+            let middle_index = update.len() / 2;
+            update.select_nth_unstable_by(middle_index,|a, b| {
                 if rules.contains(&(*a, *b)) {
                     Ordering::Less
                 } else {
@@ -52,6 +54,5 @@ fn main() {
         }
     }
 
-    println!("{}", correct_middle_page_sum);
-    println!("{}", incorrect_middle_page_sum);
+    println!("{}\n{}", correct_middle_page_sum, incorrect_middle_page_sum);
 }
