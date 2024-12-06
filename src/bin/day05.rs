@@ -7,34 +7,35 @@ use std::collections::HashSet;
 use std::io::BufRead;
 
 fn main() {
-    let mut lines = get_input_reader().lines().map(|l| l.unwrap());
+    let mut lines = get_input_reader().lines().map(|l| unsafe { l.unwrap_unchecked() });
 
     // Pre-allocate required space
     let mut rules: HashSet<(u32, u32)> = HashSet::with_capacity(1200);
-    let mut updates: Vec<Vec<u32>> = Vec::with_capacity(250);
+    let mut updates: Vec<Vec<u32>> = Vec::with_capacity(200);
 
-    // Read the rules.
-    lines
-        .by_ref()
-        .take_while(|line| !line.is_empty())
-        .map(|line| {
-            line.split('|')
-                .map(|s| s.parse::<u32>().unwrap())
-                .collect_tuple::<(u32, u32)>()
-                .unwrap()
-        })
-        .collect_into(&mut rules);
+    // Throw safety out the window for speed
+    unsafe {
+        // Read the rules.
+        lines
+            .by_ref()
+            .take_while(|line| !line.is_empty())
+            .map(|line| {
+                let (a, b) = line.split_once('|').unwrap_unchecked();
+                (a.parse::<u32>().unwrap_unchecked(), b.parse::<u32>().unwrap_unchecked())
+            })
+            .collect_into(&mut rules);
 
-    // Read the updates.
-    lines
-        .by_ref()
-        .map(|line| {
-            line.split(',')
-                .map(|s| s.parse::<u32>().unwrap())
-                .collect_vec()
-        })
-        .collect_into(&mut updates);
-
+        // Read the updates.
+        lines
+            .by_ref()
+            .map(|line| {
+                line.split(',')
+                    .map(|s| s.parse::<u32>().unwrap_unchecked())
+                    .collect_vec()
+            })
+            .collect_into(&mut updates);
+    }
+    
     let mut correct_middle_page_sum = 0;
     let mut incorrect_middle_page_sum = 0;
     
