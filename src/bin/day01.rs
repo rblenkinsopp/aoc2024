@@ -1,18 +1,16 @@
+use std::collections::HashMap;
 // Advent of Code 2024: Day 1
 use std::io::BufRead;
 use aoc2024::get_input_reader;
-use arrayvec::ArrayVec;
-use fxhash::{FxBuildHasher, FxHashMap};
-use rdst::RadixSort;
 
 // Pre-allocate 1000 entries as this is the expected input count.
 const EXPECTED_INPUT_COUNT: usize = 1000;
 
 fn main() {
     // Parse the data into sorted lists of integers and count the right numbers.
-    let mut left_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
-    let mut right_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
-    let mut right_numbers_counts: FxHashMap<u32, u32> = FxHashMap::with_capacity_and_hasher(EXPECTED_INPUT_COUNT, FxBuildHasher::default());
+    let mut left_numbers: Vec<u32> = Vec::with_capacity(EXPECTED_INPUT_COUNT);
+    let mut right_numbers: Vec<u32> = Vec::with_capacity(EXPECTED_INPUT_COUNT);
+    let mut right_numbers_counts: HashMap<u32, u32> = HashMap::with_capacity(EXPECTED_INPUT_COUNT);
 
     for line in get_input_reader().lines() {
         let line = line.unwrap();
@@ -25,8 +23,8 @@ fn main() {
         right_numbers.push(right);
         *right_numbers_counts.entry(right).or_insert(0) += 1;
     }
-    left_numbers.radix_sort_unstable();
-    right_numbers.radix_sort_unstable();
+    left_numbers.sort_unstable();
+    right_numbers.sort_unstable();
 
     // Part 1
     // Calculate the accumulation of the difference between the two numbers.
