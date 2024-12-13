@@ -7,13 +7,12 @@ use rdst::RadixSort;
 
 // Pre-allocate 1000 entries as this is the expected input count.
 const EXPECTED_INPUT_COUNT: usize = 1000;
-const EXPECTED_MAX_VALUE:usize = 99999;
 
 fn main() {
     // Parse the data into sorted lists of integers and count the right numbers.
     let mut left_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
     let mut right_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
-    let mut right_numbers_counts: FxHashMap<u32, u32> = FxHashMap::with_capacity_and_hasher(EXPECTED_MAX_VALUE, FxBuildHasher::default());
+    let mut right_numbers_counts: FxHashMap<u32, u32> = FxHashMap::with_capacity_and_hasher(EXPECTED_INPUT_COUNT, FxBuildHasher::default());
 
     for line in get_input_reader().lines() {
         let line = line.unwrap();
