@@ -2,15 +2,16 @@
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::io::BufRead;
-use aoc2024::get_input_reader;
+use aoc2024::{get_input_reader, print_answer};
+use arrayvec::ArrayVec;
 
 // Pre-allocate 1000 entries as this is the expected input count.
 const EXPECTED_INPUT_COUNT: usize = 1000;
 
 fn main() {
     // Parse the data into sorted lists of integers and count the right numbers.
-    let mut left_numbers: Vec<u32> = Vec::with_capacity(EXPECTED_INPUT_COUNT);
-    let mut right_numbers: Vec<u32> = Vec::with_capacity(EXPECTED_INPUT_COUNT);
+    let mut left_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new_const();
+    let mut right_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new_const();
     let mut right_numbers_counts: HashMap<u32, u32> = HashMap::with_capacity(EXPECTED_INPUT_COUNT);
 
     // Input will always be valid so ignore additional safety checks
@@ -44,5 +45,5 @@ fn main() {
         .filter_map(|&number| right_numbers_counts.get(&number).map(|&count| number * count))
         .sum();
 
-    println!("{}\n{}", difference_sum, similarity_score);
+    print_answer(difference_sum, similarity_score);
 }
