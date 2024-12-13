@@ -14,7 +14,7 @@ fn main() {
     // Parse the data into sorted lists of integers and count the right numbers.
     let mut left_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
     let mut right_numbers: ArrayVec<u32, EXPECTED_INPUT_COUNT> = ArrayVec::new();
-    let mut right_numbers_counts: ArrayVec<u32,EXPECTED_MAX_VALUE> = ArrayVec::new();
+    let mut right_numbers_counts: Vec<u32> = vec![0; EXPECTED_MAX_VALUE];
 
     // Input will always be valid so ignore additional safety checks
     unsafe {
